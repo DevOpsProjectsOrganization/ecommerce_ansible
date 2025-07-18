@@ -1,7 +1,7 @@
 - name: Download repo file
   ansible.builtin.copy:
     src: hashicorp.repo
-    dest: /etc/yum.repos.d/vault.repo
+    dest: /etc/yum.repos.d/hashicorp.repo
 
 - name: install vault
   ansible.builtin.dnf:
