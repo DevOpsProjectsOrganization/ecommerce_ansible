@@ -1,18 +1,19 @@
-- name: Download hashicorp repo file
+- name: Download Hashicorp repo file
   ansible.builtin.copy:
     src: hashicorp.repo
     dest: /etc/yum.repos.d/hashicorp.repo
 
-- name: Install vault using dnf
+- name: Install Vault
   ansible.builtin.dnf:
     name: vault
     state: installed
-- name: Copy config
+
+- name: Copy Vault config
   ansible.builtin.copy:
     src: vault.hcl
     dest: /etc/vault.d/vault.hcl
 
-- name: start service
+- name: Start Service
   ansible.builtin.systemd_service:
     name: vault
     state: restarted
