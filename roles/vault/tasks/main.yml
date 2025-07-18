@@ -1,18 +1,19 @@
-- name: Add HashiCorp GPG key
-  ansible.builtin.rpm_key:
-    state: present
-    key: https://rpm.releases.hashicorp.com/gpg
+- name: Download repo file
+  ansible.builtin.copy:
+    src: hashicorp.repo
+    dest: /etc/yum.repos.d/vault.repo
 
-- name: Add hashicorp repo
-  ansible.builtin.yum_repository:
-    name: hashicorp
-    description: HashiCorp Stable -$basearch
-    baseurl: https"//rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-    enabled: yes
-    gpgcheck: yes
-    gpgkey: https://rpm.releases.hashicorp.com/gpg
-
-- name: install Vault
-  ansible.builtin.yum:
+- name: install vault
+  ansible.builtin.dnf:
     name: vault
-    state: present
+    state: installed
+
+- name: copy the vault config
+  ansible.builtin.copy:
+    src: vault.hcl
+    dest: /etc/vault.d/vault.hcl
+
+- name: start service
+  ansible.builtin.systemd_service:
+    state: restarted
+    enabled: yes
