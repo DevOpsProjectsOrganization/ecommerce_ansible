@@ -8,7 +8,7 @@
 #mongosh --host mongodb-dev.sdevops.shop </app/db/master-data.js
 
 - name: copy the repo file
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: mongo.repo
     dest: /etc/yum.repos.d/mongo.repo
 

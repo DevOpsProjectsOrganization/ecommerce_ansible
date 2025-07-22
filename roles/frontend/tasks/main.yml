@@ -10,7 +10,7 @@
     state: installed
 
 - name: copy the nginx conf file
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: frontend.service
     dest: /etc/nginx/nginx.conf
 
