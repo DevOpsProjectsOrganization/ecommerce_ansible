@@ -4,7 +4,7 @@ Description = Catalogue Service
 [Service]
 User=roboshop
 Environment=MONGO=true
-Environment=MONGO_URL="mongodb://"{{lookup('hashi_vault','secret
+Environment=MONGO_URL="mongodb://"{{lookup('community.hashi_vault.hashi_vault','secret
 =roboshop-{{env}}/data/catalogue:MONGO_URL token={{token}} 
 url=http://vault-internal.sdevops.shop:8200')}}":27017/catalogue"
 ExecStart=/bin/node /app/server.js
