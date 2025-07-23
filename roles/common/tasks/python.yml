@@ -1,5 +1,5 @@
 - name: install python
-  ansible.builtin.dnf: dnf install python3 gcc python3-devel -y
+  ansible.builtin.shell: dnf install python3 gcc python3-devel -y
 
 - name: import pre req role
   ansible.builtin.import_role:
