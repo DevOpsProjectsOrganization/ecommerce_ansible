@@ -6,7 +6,7 @@
 #rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
 
 - name: copy repo file
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: rabbitmq.repo
     dest: /etc/yum.repos.d/rabbitmq.repo
 
