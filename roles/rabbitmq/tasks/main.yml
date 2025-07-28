@@ -17,10 +17,9 @@
 
 - name: systemd start
   ansible.builtin.systemd_service:
-    name: rabbitmq
+    name: rabbitmq-server
     enabled: true
     state: restarted
-    daemon_reload: true
 
 - name: add user in rabbit-mq
   ansible.builtin.shell: rabbitmqctl add_user {{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/rabbitmq:ROOT_USER token={{token}} url=http://vault-internal.sdevops.shop:8200')}} {{lookup('community.hashi_vault.hashi_vault','secret roboshop-{{env}}/data/rabbitmq:ROOT_PASSWORD token={{token}} url=http://vault-internal.sdevops.shop:8200')}} ; rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
