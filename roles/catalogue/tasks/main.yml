@@ -23,4 +23,4 @@
     state: installed
 
 - name: connect mongodb to host
-  ansible.builtin.shell: mongosh --host mongodb-dev.sdevops.shop </app/db/master-data.js
+  ansible.builtin.shell: mongosh --host mongodb.sdevops.shop </app/db/master-data.js
