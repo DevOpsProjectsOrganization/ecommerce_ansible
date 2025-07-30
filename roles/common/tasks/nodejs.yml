@@ -5,6 +5,7 @@
   ansible.builtin.dnf:
     name: nodejs
     state: installed
+
 - name: import APP_PREREQ
   ansible.builtin.import_role:
     name: common
