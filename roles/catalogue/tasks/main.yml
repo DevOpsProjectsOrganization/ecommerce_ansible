@@ -22,5 +22,11 @@
     name: mongodb-mongosh
     state: installed
 
+- name: Add mongodb-dev.sdevops.shop to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "172.31.90.62 mongodb-dev.sdevops.shop"
+    state: present
+
 - name: connect mongodb to host
   ansible.builtin.shell: mongosh --host  mongodb-dev.sdevops.shop </app/db/master-data.js
