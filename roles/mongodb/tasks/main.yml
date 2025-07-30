@@ -1,7 +1,7 @@
 - name: copy the repo file
   ansible.builtin.copy:
     src: mongo.repo
-    dest: /etc/yum.repos.d/mongodb-org-6.0.repo
+    dest: /etc/yum.repos.d/mongo.repo
 
 - name: install mongodb
   ansible.builtin.dnf:
@@ -17,5 +17,5 @@
 - name: start mongodb
   ansible.builtin.systemd_service:
     name: mongod
-    enabled: true
+    enabled: yes
     state: restarted
