@@ -31,11 +31,13 @@
     dest: /usr/share/nginx/html/
     remote_src: yes
 
-- name: Add catalogue-dev.sdevops.shop to /etc/hosts
-  ansible.builtin.lineinfile:
-    path: /etc/hosts
-    line: "172.31.80.172 catalogue-dev.sdevops.shop"
-    state: present
+- name: Read backend service URLs from Vault
+  ansible.builtin.set_fact:
+    catalogue_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:CATALOGUE_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+    user_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:USER_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+    cart_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:CART_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+    shipping_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:SHIPPING_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+    payment_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:PAYMENT_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
 
 - name: Restart nginx
   ansible.builtin.systemd_service:
