@@ -31,6 +31,12 @@
     dest: /usr/share/nginx/html/
     remote_src: yes
 
+- name: Add catalogue-dev.sdevops.shop to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "172.31.80.172 catalogue-dev.sdevops.shop"
+    state: present
+
 - name: Restart nginx
   ansible.builtin.systemd_service:
     name: nginx
