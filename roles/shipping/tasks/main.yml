@@ -14,5 +14,5 @@
     ports:
       - "8080:8080"
     env:
-      CART_ENDPOINT: cart-dev.sdevops.shop:8080
-      DB_HOST: mysql-dev.sdevops.shop
+      CART_ENDPOINT: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/shippping:CART_ENDPOINT token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
+      DB_HOST: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/shippping:DB_HOST token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"

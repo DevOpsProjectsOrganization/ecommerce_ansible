@@ -37,5 +37,5 @@
     ports:
       - "8080:8080"
     env:
-      MONGO: true
-      MONGO_URL: "mongodb://mongo-dev.sdevops.shop:27017/catalogue"
+      MONGO: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/catalogue:MONGO token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
+      MONGO_URL: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/catalogue:MONGO_URL token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"

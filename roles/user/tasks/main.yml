@@ -18,6 +18,6 @@
     ports:
       - "8080:8080"
     env:
-      MONGO: true
-      MONGO_URL: "mongodb://mongo-dev.sdevops.shop:27017/users"
-      REDIS_URL: "redis://redis-dev.sdevops.shop:6379"
+      MONGO: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/user:MONGO token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
+      MONGO_URL: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/user:MONGO_URL token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
+      REDIS_URL: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/user:REDIS_URL token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
