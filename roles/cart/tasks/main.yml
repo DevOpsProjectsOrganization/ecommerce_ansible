@@ -1,4 +1,19 @@
-- name: import nodejs service from common role
+# - name: import nodejs service from common role
+#   ansible.builtin.import_role:
+#     name: common
+#     tasks_from: nodejs.yml
+- name: Import docker
   ansible.builtin.import_role:
-    name: common
-    tasks_from: nodejs.yml
+    name: docker
+    tasks_from: docker.yml
+
+- name: Restart a container
+  community.docker.docker_container:
+    name: cart
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/cart
+    ports:
+      - "8080:8080"
+    env:
+      CATALOGUE_HOST: catalogue-dev.sdevops.shop
+      CATALOGUE_PORT: "8080"
+      REDIS_HOST: redis-dev.sdevops.shop

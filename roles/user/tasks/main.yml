@@ -1,7 +1,23 @@
 #source common.sh
 #component=user
 #NODEJS
-- name: import nodejs from common user
-  ansible.builtin.import_role:
+# - name: import nodejs from common user
+#   ansible.builtin.import_role:
+#     name: common
+#     tasks_from: nodejs.yml
+
+- name: import docker
+  ansbile.builtin.import_role:
     name: common
-    tasks_from: nodejs.yml
+    tasks_from: docker
+
+- name: Restart a container
+  community.docker.docker_container:
+    name: user
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/user
+    ports:
+      - "8080:8080"
+    env:
+      MONGO: true
+      MONGO_URL: "mongodb://mongo-dev.sdevops.shop:27017/users"
+      REDIS_URL: "redis://redis-dev.sdevops.shop:6379"

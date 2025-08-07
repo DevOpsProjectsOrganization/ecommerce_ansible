@@ -1,4 +1,24 @@
-- name: import python from common role
-  ansible.builtin.import_role:
+# - name: import python from common role
+#   ansible.builtin.import_role:
+#     name: common
+#     tasks_from: python.yml
+
+- name: import docker
+  ansbile.builtin.import_role:
     name: common
-    tasks_from: python.yml
+    tasks_from: docker
+
+- name: Restart a container
+  community.docker.docker_container:
+    name: payment
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/payment
+    ports:
+      - "8080:8080"
+    env:
+      CART_HOST: cart-dev.sdevops.shop
+      CART_PORT: "8080"
+      USER_HOST: user-dev.sdevops.shop
+      USER_PORT: "8080"
+      AMQP_HOST: rabbitmq-dev.sdevops.shop
+      AMQP_USER: roboshop
+      AMQP_PASS: roboshop123

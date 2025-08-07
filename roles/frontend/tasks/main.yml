@@ -1,47 +1,70 @@
-- name: disable nginx
-  ansible.builtin.shell: dnf module disable nginx -y
+# - name: disable nginx
+#   ansible.builtin.shell: dnf module disable nginx -y
 
-- name: enable nginx
-  ansible.builtin.shell: dnf module enable nginx:1.24 -y
+# - name: enable nginx
+#   ansible.builtin.shell: dnf module enable nginx:1.24 -y
 
-- name: Install nginx
-  ansible.builtin.dnf:
-    name: nginx
-    state: installed
+# - name: Install nginx
+#   ansible.builtin.dnf:
+#     name: nginx
+#     state: installed
 
-- name: Read backend service URLs from Vault
-  ansible.builtin.set_fact:
-    catalogue_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:CATALOGUE_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
-    user_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:USER_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
-    cart_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:CART_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
-    shipping_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:SHIPPING_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
-    payment_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:PAYMENT_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+# - name: Read backend service URLs from Vault
+#   ansible.builtin.set_fact:
+#     catalogue_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:CATALOGUE_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+#     user_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:USER_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+#     cart_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:CART_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+#     shipping_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:SHIPPING_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
+#     payment_url: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-' ~ env ~ '/data/frontend:PAYMENT_URL token=' ~ token ~ ' url=http://vault-internal.sdevops.shop:8200') }}"
 
-- name: copy the nginx conf file
-  ansible.builtin.template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
-    mode: "0644"
+# - name: copy the nginx conf file
+#   ansible.builtin.template:
+#     src: nginx.conf.j2
+#     dest: /etc/nginx/nginx.conf
+#     mode: "0644"
 
-- name: delete old nginx html file
-  ansible.builtin.file:
-    path: /usr/share/nginx/html/
-    state: absent
+# - name: delete old nginx html file
+#   ansible.builtin.file:
+#     path: /usr/share/nginx/html/
+#     state: absent
 
-- name: create dest file for config
-  ansible.builtin.file:
-    path: /usr/share/nginx/html
-    state: directory
+# - name: create dest file for config
+#   ansible.builtin.file:
+#     path: /usr/share/nginx/html
+#     state: directory
 
-- name: Unarchive a file
-  ansible.builtin.unarchive:
-    src: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
-    dest: /usr/share/nginx/html/
-    remote_src: yes
+# - name: Unarchive a file
+#   ansible.builtin.unarchive:
+#     src: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+#     dest: /usr/share/nginx/html/
+#     remote_src: yes
 
-- name: Restart nginx
-  ansible.builtin.systemd_service:
-    name: nginx
-    state: restarted
-    enabled: true
-    daemon_reload: true
+# - name: Restart nginx
+#   ansible.builtin.systemd_service:
+#     name: nginx
+#     state: restarted
+#     enabled: true
+#     daemon_reload: true
+
+- name: import docker
+  ansbile.builtin.import_role:
+    name: common
+    tasks_from: docker
+
+- name: Restart a container
+  community.docker.docker_container:
+    name: frontend
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/frontend
+    ports:
+      - "80:80"
+    env:
+      CATALOGUE_HOST: catalogue-dev.sdevops.shop
+      CATALOGUE_PORT: "8080"
+      USER_HOST: user-dev.sdevops.shop
+      USER_PORT: "8080"
+      CART_HOST: cart-dev.sdevops.shop
+      CART_PORT: "8080"
+      SHIPPING_HOST: shipping-dev.sdevops.shop
+      SHIPPING_PORT: "8080"
+      PAYMENT_HOST: payment-dev.sdevops.shop
+      PAYMENT_PORT: "8080"

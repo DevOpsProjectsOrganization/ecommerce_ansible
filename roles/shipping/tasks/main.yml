@@ -1,4 +1,18 @@
-- name: import maven from common role
-  ansible.builtin.import_role:
+# - name: import maven from common role
+#   ansible.builtin.import_role:
+#     name: common
+
+- name: import docker
+  ansbile.builtin.import_role:
     name: common
-    tasks_from: maven.yml
+    tasks_from: docker
+
+- name: Restart a container
+  community.docker.docker_container:
+    name: shippping
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/shipping
+    ports:
+      - "8080:8080"
+    env:
+      CART_ENDPOINT: cart-dev.sdevops.shop:8080
+      DB_HOST: mysql-dev.sdevops.shop
