@@ -2,9 +2,9 @@
 #   ansible.builtin.import_role:
 #     name: common
 #     tasks_from: nodejs.yml
-- name: Import docker
+- name: import docker
   ansible.builtin.import_role:
-    name: docker
+    name: common
     tasks_from: docker.yml
 
 - name: Restart a container

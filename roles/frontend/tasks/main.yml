@@ -47,9 +47,9 @@
 #     daemon_reload: true
 
 - name: import docker
-  ansbile.builtin.import_role:
+  ansible.builtin.import_role:
     name: common
-    tasks_from: docker
+    tasks_from: docker.yml
 
 - name: Restart a container
   community.docker.docker_container:
