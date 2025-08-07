@@ -9,10 +9,10 @@
 
 - name: Restart a container
   community.docker.docker_container:
-    name: shippping
+    name: shipping
     image: public.ecr.aws/w8x4g9h7/roboshop-v3/shipping
     ports:
       - "8080:8080"
     env:
-      CART_ENDPOINT: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/shippping:CART_ENDPOINT token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
-      DB_HOST: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/shippping:DB_HOST token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
+      CART_ENDPOINT: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/shipping:CART_ENDPOINT token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
+      DB_HOST: "{{lookup('community.hashi_vault.hashi_vault','secret=roboshop-{{env}}/data/shipping:DB_HOST token={{token}} url=http://vault-internal.sdevops.shop:8200')}}"
