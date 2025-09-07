@@ -1,0 +1,50 @@
+- name : Set Prompt
+  ansible.builtin.shell: sudo set-prompt github-runner
+
+- name : set up a user
+  ansible.builtin.user:
+    name: github-runner
+    home: /github-runner
+
+- name : download and install github runner
+  ansible.builtin.unarchive:
+    src: https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
+    dest: /github-runner
+    remote_src: yes
+    owner : github-runner
+    group : github-runner
+
+- name : Install libicu
+  ansible.builtin.dnf:
+    name: libicu
+    state: installed
+
+- name: configure runner
+  ansible.builtin.shell: ./config.sh --url https://github.com/DevOpsProjectsOrganization/aws_eks_cluster_kubernetes --token {{token}} --runnergroup Default --name github-runner --labels self-hosted --work _work --replace
+  args:
+    chdir: /github-runner
+  become_user: github-runner
+  vars:     
+    token : BGPMM4PGO6CNK3ONBQ3Y633IXUZPY
+  ignore_errors: yes
+
+- name : Copy the service file
+  ansible.builtin.template:
+    src: github-runner.service
+    dest : /etc/systemd/system/github-runner.service
+
+- name : start the systemd service
+  ansible.builtin.systemd_service:
+    name: github-runner
+    state: restarted
+    enabled: yes
+
+- name: Download Terraform Repo
+  ansible.builtin.get_url:
+    url: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+    dest: /etc/yum.repos.d/hashicorp.repo
+
+- name: Install Terraform
+  ansible.builtin.dnf:
+    name: terraform
+    state: installed
