@@ -20,7 +20,7 @@
     state: installed
 
 - name: configure runner
-  ansible.builtin.shell: ./config.sh --url https://github.com/DevOpsProjectsOrganization/aws_eks_cluster_kubernetes --token {{token}} --runnergroup Default --name github-runner --labels self-hosted --work _work --replace 
+  ansible.builtin.shell: ./config.sh --url https://github.com/DevOpsProjectsOrganization --token {{token}} --runnergroup Default --name github-runner --labels self-hosted --work _work --replace 
   args:
     chdir: /github-runner
   become_user: github-runner
