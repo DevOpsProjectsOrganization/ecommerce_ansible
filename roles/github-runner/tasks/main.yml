@@ -25,7 +25,7 @@
     chdir: /github-runner
   become_user: github-runner
   vars:     
-    token : "BGPMM4LBCBWBZNI7QIOCD53IX2K4I"
+    token : "BGPMM4PWWYGLHL2AEZRRYP3IX2LXK"
   ignore_errors: yes
 
 - name : Copy the service file
