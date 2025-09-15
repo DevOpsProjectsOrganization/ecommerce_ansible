@@ -58,7 +58,7 @@
 - name : download docker
   ansible.builtin.dnf:
     name : docker-ce
-    state: started
+    state: installed
 
 - name : start docker
   ansible.builtin.systemd_service:
