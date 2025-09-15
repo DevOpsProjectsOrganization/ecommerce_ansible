@@ -1,5 +1,5 @@
-- name : Set Prompt
-  ansible.builtin.shell: sudo set-prompt github-runner
+# - name : Set Prompt
+#   ansible.builtin.shell: sudo set-prompt github-runner
 
 - name : set up a user
   ansible.builtin.user:
