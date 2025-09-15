@@ -46,9 +46,8 @@
 - name : start the systemd service
   ansible.builtin.systemd_service:
     name: github-runner
-    state: "restarted"
-    enabled: true
-    daemon_reload : true
+    state: restarted
+    enabled: yes
 
 - name : Install docker repo file
   ansible.builtin.get_url:
@@ -70,3 +69,4 @@
   ansible.builtin.user:
     name : github-runner
     groups: docker
+    append: yes
