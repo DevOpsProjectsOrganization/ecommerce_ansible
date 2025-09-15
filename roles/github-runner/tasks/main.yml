@@ -49,3 +49,24 @@
     state: "restarted"
     enabled: true
     daemon_reload : true
+
+- name : Install docker repo file
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/rhel/docker-ce.repo
+    dest: /etc/yum.repos.d/docker.repo
+
+- name : download docker
+  ansible.builtin.dnf:
+    name : docker-ce
+    state: started
+
+- name : start docker
+  ansible.builtin.systemd_service:
+    name : docker
+    state: started
+    enabled: true
+
+- name : add runner to the user group
+  ansible.builtin.user:
+    name : github-runner
+    group: docker
