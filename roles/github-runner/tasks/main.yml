@@ -69,4 +69,4 @@
 - name : add runner to the user group
   ansible.builtin.user:
     name : github-runner
-    group: docker
+    groups: docker
