@@ -70,3 +70,14 @@
     name : github-runner
     groups: docker
     append: yes
+
+- name : install nodejs
+  ansible.builtin.shell: |
+    dnf module disable nodejs -y
+    dnf module enable nodejs:22 -y
+
+- name : install app packages
+  ansible.builtin.dnf:
+    name:
+      - nodejs
+      - maven
