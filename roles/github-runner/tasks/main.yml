@@ -14,41 +14,6 @@
     owner : github-runner
     group : github-runner
 
-- name : Install libicu
-  ansible.builtin.dnf:
-    name: libicu
-    state: installed
-
-- name: configure runner
-  ansible.builtin.shell: ./config.sh --url https://github.com/DevOpsProjectsOrganization --token {{token}} --runnergroup Default --name github-runner --labels self-hosted --work _work --replace 
-  args:
-    chdir: /github-runner
-  become_user: github-runner
-  vars:     
-    token : "BGPMM4MZZBACRZ53NCSOXITIY7NES"
-  ignore_errors: yes
-
-- name : Copy the service file
-  ansible.builtin.template:
-    src: github-runner.service
-    dest : /etc/systemd/system/github-runner.service
-
-- name: Download Terraform Repo
-  ansible.builtin.get_url:
-    url: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-    dest: /etc/yum.repos.d/hashicorp.repo
-
-- name: Install Terraform
-  ansible.builtin.dnf:
-    name: terraform
-    state: installed
-
-- name : start the systemd service
-  ansible.builtin.systemd_service:
-    name: github-runner
-    state: restarted
-    enabled: yes
-
 - name : Install docker repo file
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/rhel/docker-ce.repo
@@ -71,22 +36,58 @@
     groups: docker
     append: yes
 
-- name : install nodejs
-  ansible.builtin.shell: |
-    dnf module disable nodejs -y
-    dnf module enable nodejs:22 -y
+## All the below will be installed inside the container using docker image
+# - name : Install libicu
+#   ansible.builtin.dnf:
+#     name: libicu
+#     state: installed
 
-- name : install app packages
-  ansible.builtin.dnf:
-    name:
-      - nodejs
-      - npm
-      - maven
+# - name: configure runner
+#   ansible.builtin.shell: ./config.sh --url https://github.com/DevOpsProjectsOrganization --token {{token}} --runnergroup Default --name github-runner --labels self-hosted --work _work --replace 
+#   args:
+#     chdir: /github-runner
+#   become_user: github-runner
+#   vars:     
+#     token : "BGPMM4MZZBACRZ53NCSOXITIY7NES"
+#   ignore_errors: yes
 
-- name : installing helm
-  ansible.builtin.shell : |
-   curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-  args:
-    executable: /bin/bash
-  environment:
-    PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
+# - name : Copy the service file
+#   ansible.builtin.template:
+#     src: github-runner.service
+#     dest : /etc/systemd/system/github-runner.service
+
+# - name: Download Terraform Repo
+#   ansible.builtin.get_url:
+#     url: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+#     dest: /etc/yum.repos.d/hashicorp.repo
+
+# - name: Install Terraform
+#   ansible.builtin.dnf:
+#     name: terraform
+#     state: installed
+
+# - name : start the systemd service
+#   ansible.builtin.systemd_service:
+#     name: github-runner
+#     state: restarted
+#     enabled: yes
+
+# - name : install nodejs
+#   ansible.builtin.shell: |
+#     dnf module disable nodejs -y
+#     dnf module enable nodejs:22 -y
+
+# - name : install app packages
+#   ansible.builtin.dnf:
+#     name:
+#       - nodejs
+#       - npm
+#       - maven
+
+# - name : installing helm
+#   ansible.builtin.shell : |
+#    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+#   args:
+#     executable: /bin/bash
+#   environment:
+#     PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
