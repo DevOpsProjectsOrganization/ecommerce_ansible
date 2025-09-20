@@ -1,10 +1,10 @@
 # - name : Set Prompt
 #   ansible.builtin.shell: sudo set-prompt github-runner
 
-# - name : set up a user
-#   ansible.builtin.user:
-#     name: github-runner
-#     home: /github-runner
+- name : set up a user
+  ansible.builtin.user:
+    name: github-runner
+    home: /github-runner
 
 - name : download and install github runner
   ansible.builtin.unarchive:
