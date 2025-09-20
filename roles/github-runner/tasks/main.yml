@@ -80,4 +80,5 @@
   ansible.builtin.dnf:
     name:
       - nodejs
+      - npm
       - maven
