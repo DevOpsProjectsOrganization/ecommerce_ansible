@@ -84,4 +84,9 @@
       - maven
 
 - name : installing helm
-  ansible.builtin.shell : curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  ansible.builtin.shell : |
+   curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  args:
+    executable: /bin/bash
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
