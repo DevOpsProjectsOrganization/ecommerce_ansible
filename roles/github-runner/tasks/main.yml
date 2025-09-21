@@ -50,10 +50,10 @@
       NAME : "{{ item }}"
       TOKEN : "BGPMM4LKIRSKVZAQDCDGNVTIZ6RGM"
       ORG : "https://github.com/DevOpsProjectsOrganization"
-    loop:
-      -  github-runner-1
-      -  github-runner-2
-      -  github-runner-3
+  loop:
+    -  github-runner-1
+    -  github-runner-2
+    -  github-runner-3
    
 
 ## All the below will be installed inside the container using docker image
