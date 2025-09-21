@@ -29,8 +29,7 @@
     name : docker
     state: started
     enabled: true
-    become: yes
-    become_user: github-runner
+    daemon_reload: yes
 
 - name : add runner to the user group
   ansible.builtin.user:
