@@ -36,6 +36,24 @@
     groups: docker
     append: yes
 
+- name : login to ECR
+  ansible.builtin.shell : aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
+
+- name :  login to ECR
+  ansible.builtin.shell : aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
+
+- name : create 3 containers
+  community.docker.docker_container:
+    name: runner1
+    image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner:latest
+    state: present
+    recreate : true
+    env :
+      NAME : "github-runner-1"
+      TOKEN : "BGPMM4LKIRSKVZAQDCDGNVTIZ6RGM"
+      ORG : "https://github.com/DevOpsProjectsOrganization"
+   
+
 ## All the below will be installed inside the container using docker image
 # - name : Install libicu
 #   ansible.builtin.dnf:
