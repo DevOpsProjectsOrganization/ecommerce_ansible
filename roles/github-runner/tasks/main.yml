@@ -49,7 +49,7 @@
     recreate : true
     env :
       NAME : "{{ item }}"
-      TOKEN : "BGPMM4LWSHSZME3CNUCK5W3IZ657W"
+      TOKEN : "BGPMM4KYVFM6MLZ6TOFY3LLIZ7QWA"
       ORG : "https://github.com/DevOpsProjectsOrganization"
   loop:
     -  github-runner-1
