@@ -47,7 +47,7 @@
     state: started
     recreate : true
     env :
-      NAME : {{ item }}
+      NAME : "{{ item }}"
       TOKEN : "BGPMM4LKIRSKVZAQDCDGNVTIZ6RGM"
       ORG : "https://github.com/DevOpsProjectsOrganization"
     loop:
