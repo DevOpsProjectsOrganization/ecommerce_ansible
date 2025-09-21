@@ -45,7 +45,7 @@
 
 - name :  login to ECR
   ansible.builtin.shell : |
-    usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
+    /usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
 
 - name : create 3 containers
   community.docker.docker_container:
