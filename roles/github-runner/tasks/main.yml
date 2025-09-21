@@ -1,5 +1,5 @@
-# - name : Set Prompt
-#   ansible.builtin.shell: sudo set-prompt github-runner
+- name : Set Prompt
+  ansible.builtin.shell: sudo set-prompt github-runner
 
 - name : set up a user
   ansible.builtin.user:
@@ -29,6 +29,8 @@
     name : docker
     state: started
     enabled: true
+    become: yes
+    become_user: github-runner
 
 - name : add runner to the user group
   ansible.builtin.user:
