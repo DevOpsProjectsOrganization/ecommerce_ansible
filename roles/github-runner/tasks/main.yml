@@ -9,7 +9,7 @@
 - name : create 3 containers
   community.docker.docker_container:
     name: "{{ item }}"
-    image: 739561048503.dkr.ecr.us-east-1.amazonaws.com/runner
+    image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
     state: started
     recreate: true
     pull: true
@@ -56,11 +56,11 @@
     - name :  login to ECR
       ansible.builtin.shell : |
         /usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
-
+      
     - name: Runner container
       community.docker.docker_container:
         name: "{{ item }}"
-        image: 739561048503.dkr.ecr.us-east-1.amazonaws.com/runner
+        image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
         state: started
         recreate: true
         pull: true
