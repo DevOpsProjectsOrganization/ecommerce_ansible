@@ -25,7 +25,9 @@
     - runner2
     - runner3
   register : out
-  ignore_errors : yes
+  ignore_errors : 
+  become: yes
+  become_user: github-runner
 
 - name : Run from scratch
   when:  out.failed is defined
@@ -52,10 +54,13 @@
         name: github-runner
         home: /github-runner
         groups: docker
+        append: yes
 
     - name :  login to ECR
       ansible.builtin.shell : |
         /usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
+      become: yes
+      become_user: github-runner
       
     - name: Runner container
       community.docker.docker_container:
@@ -75,6 +80,8 @@
         - runner1
         - runner2
         - runner3
+      become: yes
+      become_user: github-runner
 
 ## All the below will be installed inside the container using docker image
 #- name : download and install github runner
