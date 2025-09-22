@@ -9,20 +9,21 @@
 - name : create 3 containers
   community.docker.docker_container:
     name: "{{ item }}"
-    image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner:latest
+    image: 739561048503.dkr.ecr.us-east-1.amazonaws.com/runner
     state: started
-    recreate : true
-    pull : always
+    recreate: true
+    pull: always
+    restart_policy: always
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    env :
-      NAME : "{{ item }}"
-      TOKEN : "BGPMM4PEPQLYQXEA5ZZTBHLI2EFMU"
-      ORG : "https://github.com/DevOpsProjectsOrganization"
+      - /var/run/docker.sock:/var/run/docker.sock
+    env:
+      NAME: "{{ item }}"
+      TOKEN: "BGPMM4JNWPHGKO2WNI3M6ZLI2FCHO"
+      ORG: "https://github.com/DevOpsProjectsOrganization"
   loop:
-    -  github-runner-1
-    -  github-runner-2
-    -  github-runner-3
+    - runner1
+    - runner2
+    - runner3
   register : out
   ignore_errors : yes
 
