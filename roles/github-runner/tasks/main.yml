@@ -12,7 +12,7 @@
     image: 739561048503.dkr.ecr.us-east-1.amazonaws.com/runner
     state: started
     recreate: true
-    pull: always
+    pull: true
     restart_policy: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -63,7 +63,7 @@
         image: 739561048503.dkr.ecr.us-east-1.amazonaws.com/runner
         state: started
         recreate: true
-        pull: always
+        pull: true
         restart_policy: always
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
