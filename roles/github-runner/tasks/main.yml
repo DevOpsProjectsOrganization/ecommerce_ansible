@@ -24,18 +24,18 @@
     name : docker-ce
     state: installed
 
-- name : start docker
+- name: Start Docker
   ansible.builtin.systemd_service:
-    name : docker
-    state: started
-    enabled: true
-    daemon_reload: yes
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon-reload: yes
 
-- name : add runner to the user group
+- name: Add github runner user
   ansible.builtin.user:
-    name : github-runner
+    name: github-runner
+    home: /github-runner
     groups: docker
-    append: yes
 
 - name :  login to ECR
   ansible.builtin.shell : |
