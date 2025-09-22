@@ -6,47 +6,13 @@
 #     name: github-runner
 #     home: /github-runner
 
-- name : download and install github runner
-  ansible.builtin.unarchive:
-    src: https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
-    dest: /github-runner
-    remote_src: yes
-    owner : github-runner
-    group : github-runner
-
-- name : Install docker repo file
-  ansible.builtin.get_url:
-    url: https://download.docker.com/linux/rhel/docker-ce.repo
-    dest: /etc/yum.repos.d/docker.repo
-
-- name : download docker
-  ansible.builtin.dnf:
-    name : docker-ce
-    state: installed
-
-- name: Start Docker
-  ansible.builtin.systemd_service:
-    name: docker
-    state: restarted
-    enabled: yes
-    daemon-reload: yes
-
-- name: Add github runner user
-  ansible.builtin.user:
-    name: github-runner
-    home: /github-runner
-    groups: docker
-
-- name :  login to ECR
-  ansible.builtin.shell : |
-    /usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
-
 - name : create 3 containers
   community.docker.docker_container:
     name: "{{ item }}"
     image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner:latest
     state: started
     recreate : true
+    pull : always
     env :
       NAME : "{{ item }}"
       TOKEN : "BGPMM4PEPQLYQXEA5ZZTBHLI2EFMU"
@@ -55,6 +21,62 @@
     -  github-runner-1
     -  github-runner-2
     -  github-runner-3
+  register : out
+  ignore_errors : yes
+
+- name : Run from scratch
+  when:  out.failed is defined
+  block: 
+    - name : download and install github runner
+      ansible.builtin.unarchive:
+        src: https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
+        dest: /github-runner
+        remote_src: yes
+        owner : github-runner
+        group : github-runner
+
+    - name : Install docker repo file
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/rhel/docker-ce.repo
+        dest: /etc/yum.repos.d/docker.repo
+
+    - name : download docker
+      ansible.builtin.dnf:
+        name : docker-ce
+        state: installed
+
+    - name: Start Docker
+      ansible.builtin.systemd_service:
+        name: docker
+        state: restarted
+        enabled: yes
+        daemon-reload: yes
+
+    - name: Add github runner user
+      ansible.builtin.user:
+        name: github-runner
+        home: /github-runner
+        groups: docker
+
+    - name :  login to ECR
+      ansible.builtin.shell : |
+        /usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
+
+    - name : create 3 containers
+      community.docker.docker_container:
+        name: "{{ item }}"
+        image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner:latest
+        state: started
+        recreate : true
+        pull : always
+        env :
+          NAME : "{{ item }}"
+          TOKEN : "BGPMM4PEPQLYQXEA5ZZTBHLI2EFMU"
+          ORG : "https://github.com/DevOpsProjectsOrganization"
+      loop:
+        -  github-runner-1
+        -  github-runner-2
+        -  github-runner-3
    
 
 ## All the below will be installed inside the container using docker image
