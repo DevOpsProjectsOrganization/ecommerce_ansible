@@ -27,13 +27,13 @@
 - name : Run from scratch
   when:  out.failed is defined
   block: 
-    - name : download and install github runner
-      ansible.builtin.unarchive:
-        src: https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
-        dest: /github-runner
-        remote_src: yes
-        owner : github-runner
-        group : github-runner
+    # - name : download and install github runner
+    #   ansible.builtin.unarchive:
+    #     src: https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
+    #     dest: /github-runner
+    #     remote_src: yes
+    #     owner : github-runner
+    #     group : github-runner
 
     - name : Install docker repo file
       ansible.builtin.get_url:
@@ -71,7 +71,7 @@
         pull : always
         env :
           NAME : "{{ item }}"
-          TOKEN : "BGPMM4PEPQLYQXEA5ZZTBHLI2EFMU"
+          TOKEN : "BGPMM4KDIQDUA7TRPRMHOKLI2FATQ"
           ORG : "https://github.com/DevOpsProjectsOrganization"
       loop:
         -  github-runner-1
