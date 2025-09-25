@@ -43,8 +43,8 @@
         state: installed
 
     - name : remove any service file
-      ansible.builtin.shell: rm rf /etc/systemd/system/multi-user.target.wants/docker.service
-      
+      ansible.builtin.shell: rm -rf /etc/systemd/system/multi-user.target.wants/docker.service
+
         
     - name: Copy Docker service file
       ansible.builtin.template:
