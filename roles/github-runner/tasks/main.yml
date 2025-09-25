@@ -39,8 +39,6 @@
         dest: /etc/systemd/system/docker.service
         owner: root
         group: root
-      notify:
-        - Reload systemd
 
     # - name: Copy Docker service file
     #   ansible.builtin.template:
@@ -92,10 +90,7 @@
         - runner3
       become: yes
       become_user: github-runner
-  handlers:
-  - name: Reload systemd
-    ansible.builtin.systemd_service:
-      daemon_reload: true
+ 
 
 ## All the below will be installed inside the container using docker image
 #- name : download and install github runner
