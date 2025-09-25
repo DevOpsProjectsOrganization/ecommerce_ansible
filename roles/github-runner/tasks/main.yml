@@ -36,7 +36,7 @@
 
     - name: Copy Docker service file
       ansible.builtin.template:
-        src: docker.service.j2
+        src: docker.service
         dest: /etc/systemd/system/docker.service
         owner: root
         group: root
