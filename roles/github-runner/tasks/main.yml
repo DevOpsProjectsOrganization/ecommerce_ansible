@@ -41,6 +41,8 @@
         owner: root
         group: root
         force: true
+        ignore_errors : yes
+
 
     - name: Unmask Docker service
       ansible.builtin.systemd_service:
