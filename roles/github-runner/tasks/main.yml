@@ -37,6 +37,7 @@
       ansible.builtin.file:
         path: /etc/systemd/system/multi-user.target.wants/docker.service
         state: absent
+        force : true
 
     - name: Copy custom Docker service file
       ansible.builtin.template:
