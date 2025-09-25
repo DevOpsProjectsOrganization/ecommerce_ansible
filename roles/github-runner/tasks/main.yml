@@ -1,3 +1,5 @@
+# if you get an error of /etc/systemd/system/multi-target-users/docker.service file already exists then go to 
+#>root @ github-runner>sudo rm -f /etc/systemd/system/multi-user.target.wants/docker.service ; sudo systemctl daemon-reload
 - name : create 3 containers
   community.docker.docker_container:
     name: "{{ item }}"
