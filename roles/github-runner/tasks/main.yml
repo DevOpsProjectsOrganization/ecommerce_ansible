@@ -1,89 +1,89 @@
 # if you get an error of /etc/systemd/system/multi-target-users/docker.service file already exists then go to 
 #>root @ github-runner>sudo rm -f /etc/systemd/system/multi-user.target.wants/docker.service ; sudo systemctl daemon-reload
-- name : create 3 containers
-  community.docker.docker_container:
-    name: "{{ item }}"
-    image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
-    state: started
-    recreate: true
-    pull: true
-    restart_policy: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    env:
-      NAME: "{{ item }}"
-      TOKEN: "BGPMM4OTQGGJ45GC6KR3EM3I2FIEW"
-      ORG: "https://github.com/DevOpsProjectsOrganization"
-  loop:
-    - runner1
-    - runner2
-    - runner3
-  register : out
-  ignore_errors : yes
-  become_user: github-runner
+# - name : create 3 containers
+#   community.docker.docker_container:
+#     name: "{{ item }}"
+#     image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
+#     state: started
+#     recreate: true
+#     pull: true
+#     restart_policy: always
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock
+#     env:
+#       NAME: "{{ item }}"
+#       TOKEN: "BGPMM4OTQGGJ45GC6KR3EM3I2FIEW"
+#       ORG: "https://github.com/DevOpsProjectsOrganization"
+#   loop:
+#     - runner1
+#     - runner2
+#     - runner3
+#   register : out
+#   ignore_errors : yes
+#   become_user: github-runner
 
-- name : Run from scratch
-  when:  out.failed is defined
-  block: 
-    - name: Download Docker repo
-      ansible.builtin.get_url:
-        url: https://download.docker.com/linux/rhel/docker-ce.repo
-        dest: /etc/yum.repos.d/docker.repo
+# - name : Run from scratch
+#   when:  out.failed is defined
+#   block: 
+  - name: Download Docker repo
+    ansible.builtin.get_url:
+      url: https://download.docker.com/linux/rhel/docker-ce.repo
+      dest: /etc/yum.repos.d/docker.repo
 
-    - name: Install Docker
-      ansible.builtin.dnf:
-        name: docker-ce
-        state: installed
+  - name: Install Docker
+    ansible.builtin.dnf:
+      name: docker-ce
+      state: installed
 
-    - name: Copy Docker service file
-      ansible.builtin.template:
-        src: docker.service
-        dest: /etc/systemd/system/docker.service
+  - name: Copy Docker service file
+    ansible.builtin.template:
+      src: docker.service
+      dest: /etc/systemd/system/docker.service
 
-    - name: Reload systemd
-      ansible.builtin.systemd:
-        daemon_reload: true
+  - name: Reload systemd
+    ansible.builtin.systemd:
+      daemon_reload: true
 
-    - name: Start Docker
-      ansible.builtin.systemd_service:
-        name: docker
-        state: started
-        enabled: yes
-        daemon-reload: yes
+  - name: Start Docker
+    ansible.builtin.systemd_service:
+      name: docker
+      state: started
+      enabled: yes
+      daemon-reload: yes
 
-    - name: Add github runner user
-      ansible.builtin.user:
-        name: github-runner
-        home: /github-runner
-        groups: docker
-        append: yes
+  - name: Add github runner user
+    ansible.builtin.user:
+      name: github-runner
+      home: /github-runner
+      groups: docker
+      append: yes
 
-    - name :  login to ECR
-      ansible.builtin.shell : |
-        /usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
-      become: yes
-      become_user: github-runner
-      
-    - name: Runner container
-      community.docker.docker_container:
-        name: "{{ item }}"
-        image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
-        state: started
-        recreate: true
-        pull: true
-        restart_policy: always
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-        env:
-          NAME: "{{ item }}"
-          TOKEN: "BGPMM4OTQGGJ45GC6KR3EM3I2FIEW"
-          ORG: "https://github.com/DevOpsProjectsOrganization"
-      loop:
-        - runner1
-        - runner2
-        - runner3
-      become: yes
-      become_user: github-runner
+  - name :  login to ECR
+    ansible.builtin.shell : |
+      /usr/local/bin/aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533567530972.dkr.ecr.us-east-1.amazonaws.com
+    become: yes
+    become_user: github-runner
+
+  - name: Runner container
+    community.docker.docker_container:
+      name: "{{ item }}"
+      image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
+      state: started
+      recreate: true
+      pull: true
+      restart_policy: always
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      env:
+        NAME: "{{ item }}"
+        TOKEN: "BGPMM4OTQGGJ45GC6KR3EM3I2FIEW"
+        ORG: "https://github.com/DevOpsProjectsOrganization"
+    loop:
+      - runner1
+      - runner2
+      - runner3
+    become: yes
+    become_user: github-runner
  
 
 ## All the below will be installed inside the container using docker image
