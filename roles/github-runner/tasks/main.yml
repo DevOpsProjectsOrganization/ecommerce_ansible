@@ -41,6 +41,7 @@
 
     - name: Reload systemd daemon
       ansible.builtin.systemd_service:
+        name : docker
         masked : false
         daemon_reload: true
        
