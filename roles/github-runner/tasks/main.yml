@@ -38,8 +38,8 @@
       ansible.builtin.template:
         src: docker.service
         dest: /etc/systemd/system/docker.service
-        owner: root
-        group: root
+        # owner: root
+        # group: root
         # name: docker.service
         # dest: /etc/systemd/system/multi-user.target.wants/docker.service
 
