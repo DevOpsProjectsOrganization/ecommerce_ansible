@@ -33,25 +33,22 @@
       ansible.builtin.dnf:
         name : docker-ce
         state: installed
-    
-    - name: Remove conflicting docker.service symlink if it exists
-      ansible.builtin.file:
-        path: /etc/systemd/system/multi-user.target.wants/docker.service
-        state: absent
-
 
     - name: Copy Docker service file
       ansible.builtin.template:
         src: docker.service
         dest: /etc/systemd/system/multi-user.target.wants/docker.service
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd_service:
+        masked : false
+        daemon_reload: true
        
     - name: Start Docker
       ansible.builtin.systemd_service:
         name: docker
         state: restarted
         enabled: yes
-        daemon-reload: yes
-        masked : false
 
     - name: Add github runner user
       ansible.builtin.user:
