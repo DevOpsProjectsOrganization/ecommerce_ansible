@@ -33,16 +33,17 @@
       ansible.builtin.dnf:
         name : docker-ce
         state: installed
+    
+    - name: remove old docker.service file
+      ansible.builtin.shell: rm /etc/systemd/system/multi-user.target.wants/docker.service
+
+
 
     - name: Copy Docker service file
       ansible.builtin.template:
         src: docker.service
-        dest: /etc/systemd/system/docker.service
-        # owner: root
-        # group: root
-        # name: docker.service
-        # dest: /etc/systemd/system/multi-user.target.wants/docker.service
-
+        dest: /etc/systemd/system/multi-user.target.wants/docker.service
+       
     - name: Start Docker
       ansible.builtin.systemd_service:
         name: docker
