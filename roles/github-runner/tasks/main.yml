@@ -33,6 +33,10 @@
       ansible.builtin.dnf:
         name : docker-ce
         state: installed
+    - name: Remove conflicting docker.service symlink if present
+      ansible.builtin.file:
+        path: /etc/systemd/system/multi-user.target.wants/docker.service
+        state: absent
 
     - name: Copy custom Docker service file
       ansible.builtin.template:
