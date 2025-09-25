@@ -37,7 +37,7 @@
       ansible.builtin.template:
         src: docker.service
         dest: /etc/systemd/system/multi-user.target.wants/docker.service
-        
+
     - name: Disable and stop Docker service
       ansible.builtin.systemd_service:
         name: docker.service
@@ -48,7 +48,7 @@
     - name: Start Docker
       ansible.builtin.systemd_service:
         name: docker
-        state: restarted
+        state: started
         enabled: yes
         daemon-reload: yes
 
