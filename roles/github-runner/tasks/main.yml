@@ -34,9 +34,10 @@
         name : docker-ce
         state: installed
     
-    - name: remove old docker.service file
-      ansible.builtin.shell: rm /etc/systemd/system/multi-user.target.wants/docker.service
-
+    - name: Remove conflicting docker.service symlink if it exists
+      ansible.builtin.file:
+        path: /etc/systemd/system/multi-user.target.wants/docker.service
+        state: absent
 
 
     - name: Copy Docker service file
