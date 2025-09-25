@@ -49,6 +49,7 @@
         state: restarted
         enabled: yes
         daemon-reload: yes
+        masked : false
 
     - name: Add github runner user
       ansible.builtin.user:
