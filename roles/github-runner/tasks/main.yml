@@ -18,7 +18,6 @@
     - runner3
   register : out
   ignore_errors : yes
-  become: yes
   become_user: github-runner
 
 - name : Run from scratch
@@ -37,22 +36,9 @@
     - name: Copy custom Docker service file
       ansible.builtin.template:
         src: docker.service
-        dest: /etc/systemd/system/multi-user.target.wants/docker.service
-        owner: root
-        group: root
-        force: true
-        ignore_errors : yes
+        dest: /etc/systemd/system/docker.service
+        mode: "0644"
 
-
-    - name: Unmask Docker service
-      ansible.builtin.systemd_service:
-        name: docker
-        masked: false
-
-    - name: Reload systemd daemon
-      ansible.builtin.systemd_service:
-        daemon_reload: true
-         
     - name: Start Docker
       ansible.builtin.systemd_service:
         name: docker
