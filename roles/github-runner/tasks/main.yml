@@ -23,28 +23,28 @@
 - name : Run from scratch
   when:  out.failed is defined
   block: 
-    - name : Install docker repo file
+    - name: Download Docker repo
       ansible.builtin.get_url:
         url: https://download.docker.com/linux/rhel/docker-ce.repo
         dest: /etc/yum.repos.d/docker.repo
 
-    - name : download docker
+    - name: Install Docker
       ansible.builtin.dnf:
-        name : docker-ce
+        name: docker-ce
         state: installed
-  
-    - name: Copy custom Docker service file
+
+    - name: Copy Docker service file
       ansible.builtin.template:
-        src: docker.service
-        dest: /etc/systemd/system/docker.service
-        mode: "0644"
+        name: docker.service
+        dest: /etc/systemd/system/multi-user.target.wants/docker.service
 
     - name: Start Docker
       ansible.builtin.systemd_service:
         name: docker
         state: restarted
         enabled: yes
-           
+        daemon-reload: yes
+
     - name: Add github runner user
       ansible.builtin.user:
         name: github-runner
