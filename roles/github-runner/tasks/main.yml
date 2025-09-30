@@ -74,10 +74,10 @@
       restart_policy: always
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        - ~/.kube/config:/root/.kube/config
+        #- ~/.kube/config:/root/.kube/config
       env:
         NAME: "{{ item }}"
-        TOKEN: "BGPMM4PVBOK5J32PJVVKQJTI2VFTK"
+        TOKEN: "BGPMM4O3BAT7BEYTJCT5X63I3OGZE"
         ORG: "https://github.com/DevOpsProjectsOrganization"
     loop:
       - runner1
