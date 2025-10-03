@@ -77,7 +77,7 @@
         #- ~/.kube/config:/root/.kube/config
       env:
         NAME: "{{ item }}"
-        TOKEN: "BGPMM4PWFZC2RTI2WIJZ6QTI36ASQ"
+        TOKEN: "BGPMM4IHWLXYKOWYBOEDLP3I36D3I"
         ORG: "https://github.com/DevOpsProjectsOrganization"
     loop:
       - runner1
