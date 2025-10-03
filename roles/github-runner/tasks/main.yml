@@ -77,14 +77,13 @@
       image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
       state: started
       recreate: true
-      pull: "missing"
+      pull: true
       restart_policy: always
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        #- ~/.kube/config:/root/.kube/config
       env:
         NAME: "{{ item }}"
-        TOKEN: "BGPMM4IHWLXYKOWYBOEDLP3I36D3I"
+        TOKEN: "BGPMM4JW3M6EGEBYMNDYFDTI36IIS"
         ORG: "https://github.com/DevOpsProjectsOrganization"
     loop:
       - runner1
