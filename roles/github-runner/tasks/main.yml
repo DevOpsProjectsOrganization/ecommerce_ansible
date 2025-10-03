@@ -77,7 +77,7 @@
       image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
       state: started
       recreate: true
-      pull: true
+      pull: "missing"
       restart_policy: always
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
