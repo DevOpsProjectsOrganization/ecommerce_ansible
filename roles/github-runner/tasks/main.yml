@@ -74,7 +74,7 @@
   - name: Runner container
     community.docker.docker_container:
       name: "{{ item }}"
-      image: 533567530972.dkr.ecr.us-east-1.amazonaws.com/runner
+      image: "533567530972.dkr.ecr.us-east-1.amazonaws.com/runner"
       state: started
       recreate: true
       pull: true
