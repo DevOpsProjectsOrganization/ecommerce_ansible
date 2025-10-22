@@ -83,7 +83,7 @@
         - /var/run/docker.sock:/var/run/docker.sock
       env:
         NAME: "{{ item }}"
-        TOKEN: "BGPMM4PCHMO4MO5Q5TUDEL3I4IZL6"
+        TOKEN: "BGPMM4IJSNRF3JVVDKEJNHLI7CAN2"
         ORG: "https://github.com/DevOpsProjectsOrganization"
     loop:
       - runner1
