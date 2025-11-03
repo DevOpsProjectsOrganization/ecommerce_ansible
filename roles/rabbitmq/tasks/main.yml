@@ -5,6 +5,10 @@
 #rabbitmqctl add_user roboshop roboshop123
 #rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
 
+- name: Load common main
+  ansible.builtin.import_role:
+    name: common
+    
 - name: copy repo file
   ansible.builtin.copy:
     src: rabbitmq.repo
