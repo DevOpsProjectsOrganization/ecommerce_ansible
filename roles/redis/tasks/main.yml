@@ -4,6 +4,10 @@
 #sed -i 's|127.0.0.1|0.0.0.0|' /etc/redis/redis.conf
 #systemctl enable redis
 #systemctl start redis
+- name: Load common main
+  ansible.builtin.import_role:
+    name: common
+    
 - name: disable and enable redis
   ansible.builtin.shell: dnf module disable redis -y ; dnf module enable redis:7 -y
 

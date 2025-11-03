@@ -3,6 +3,10 @@
 #systemctl start mysqld
 #mysql_secure_installation --set-root-pass RoboShop@1
 
+- name: Load common main
+  ansible.builtin.import_role:
+    name: common
+    
 - name: install mysql server
   ansible.builtin.dnf:
     name: mysql-server
