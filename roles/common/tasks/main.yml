@@ -1,0 +1,9 @@
+- name : Set prompt
+  ansible.builtin.shell : set-prompt {{ component }}
+
+- name : node exporter
+  ansible.builtin.import_role:
+    name : common
+    tasks_from : node_exporter.yml
+
+
