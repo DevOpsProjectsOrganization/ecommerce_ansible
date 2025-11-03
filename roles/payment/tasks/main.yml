@@ -3,6 +3,10 @@
 #     name: common
 #     tasks_from: python.yml
 
+- name: Load common main
+  ansible.builtin.import_role:
+    name: common
+    
 - name: import docker
   ansible.builtin.import_role:
     name: common

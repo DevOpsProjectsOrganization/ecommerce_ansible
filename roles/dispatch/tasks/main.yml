@@ -1,3 +1,7 @@
+- name: Load common main
+  ansible.builtin.import_role:
+    name: common
+    
 - name: install golang
   ansible.builtin.dnf:
     name: golang

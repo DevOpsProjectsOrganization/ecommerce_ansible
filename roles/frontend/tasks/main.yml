@@ -46,6 +46,10 @@
 #     enabled: true
 #     daemon_reload: true
 
+- name: Load common main
+  ansible.builtin.import_role:
+    name: common
+    
 - name: import docker
   ansible.builtin.import_role:
     name: common
