@@ -1,6 +1,14 @@
 - name: Set Prompt
   ansible.builtin.shell: set-prompt {{ role }}
 
+- name : Grow disk size for var folder
+  ansible.builtin.shell: |
+    growpart /dev/nvme0n14
+    lvextend -L +10G /dev/mapper/RootVG-varVol
+    xfs_growfs /var
+    df -h /var
+  ignore_errors : yes
+
 - name: Copy Elastic repo file
   ansible.builtin.template:
     src: elastic.repo
