@@ -3,7 +3,7 @@
 
 - name : Grow disk size for var folder
   ansible.builtin.shell: |
-    growpart /dev/nvme0n14
+    growpart /dev/nvme0n1 4
     lvextend -L +10G /dev/mapper/RootVG-varVol
     xfs_growfs /var
     df -h /var
