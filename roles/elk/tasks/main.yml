@@ -38,6 +38,11 @@
     - kibana
     - logstash
     - nginx
+    
+- name: Ensure hvac Python module is installed
+  ansible.builtin.pip:
+    name: hvac
+    state: present
 
 - name : Copy logstash conf file
   ansible.builtin.template:
