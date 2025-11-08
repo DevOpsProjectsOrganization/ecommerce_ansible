@@ -39,6 +39,12 @@
     - logstash
     - nginx
 
+- name: Ensure hvac is installed using pip
+  ansible.builtin.pip:
+    name: hvac
+    state: present
+    executable: /usr/local/bin/pip3
+
 - name : Copy logstash conf file
   ansible.builtin.template:
     src: beats.conf
