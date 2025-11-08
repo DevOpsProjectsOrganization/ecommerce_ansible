@@ -43,7 +43,7 @@
   ansible.builtin.pip:
     name: hvac
     state: present
-    executable: /usr/local/bin/pip3
+    executable: /usr/bin/pip3
 
 - name : Copy logstash conf file
   ansible.builtin.template:
